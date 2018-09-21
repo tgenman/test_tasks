@@ -12,7 +12,7 @@ public class Task {
 
     private String dateAndTime;
 
-    public Task(String title, String description, String dateAndTime) {
+    Task(String title, String description, String dateAndTime) {
         this.id = idCounter++;
         this.title = title;
         this.description = description;
