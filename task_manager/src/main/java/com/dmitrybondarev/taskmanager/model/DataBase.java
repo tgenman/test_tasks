@@ -4,6 +4,7 @@ import com.dmitrybondarev.taskmanager.model.exception.TaskNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ public class DataBase {
         this.tracker = new HashMap<>();
     }
 
-    public int createTask(String title, String description, String dateAndTime) {
+    public int createTask(String title, String description, Date dateAndTime) {
         Task task = new Task(title, description, dateAndTime);
         tracker.put(task.getId(), task);
         return task.getId();
