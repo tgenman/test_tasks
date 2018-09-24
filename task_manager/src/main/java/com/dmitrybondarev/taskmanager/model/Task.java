@@ -51,6 +51,16 @@ public class Task {
         this.dateAndTime = dateAndTime;
     }
 
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", dateAndTime=" + dateAndTime +
+                '}';
+    }
+
     public static void main(String[] args) {
         Date dateNow = new Date();
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");

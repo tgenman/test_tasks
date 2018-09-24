@@ -1,7 +1,5 @@
 package com.dmitrybondarev.taskmanager.model;
 
-import com.dmitrybondarev.taskmanager.model.exception.TaskNotFoundException;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -16,7 +14,7 @@ public class DataBase {
         this.tracker = new HashMap<>();
     }
 
-    public int createTask(String title, String description, Date dateAndTime) {
+    public int addNewTask(String title, String description, Date dateAndTime) {
         Task task = new Task(title, description, dateAndTime);
         tracker.put(task.getId(), task);
         return task.getId();
@@ -24,13 +22,6 @@ public class DataBase {
 
     public Collection<Task> getAllTasks() {
         return tracker.values();
-    }
-
-    public Task getTaskById(int id) {
-        if (!tracker.containsKey(id)) {
-            throw new TaskNotFoundException();
-        }
-        return tracker.get(id);
     }
 
     public Collection<Task> getTasksByKeyWord(String keyWord) {
@@ -50,5 +41,7 @@ public class DataBase {
         tracker.remove(id);
         return true;
     }
+
+
 
 }
