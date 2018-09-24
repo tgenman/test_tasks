@@ -36,12 +36,12 @@ public class CommandLine implements View {
 
         while (true) {
             System.out.println("Please, enter information like pattern");
-            System.out.println("TITLE; DESCRIPTION; DATE");
+            System.out.println("Title; Description; day.month.year; hours:minutes");
 
             String newTask = scanner.nextLine();
             splitString = newTask.split(";");
 
-            if (splitString.length != 3
+            if (splitString.length != 4
                     || splitString[0].equals("")) {
                 printIncorrectInput();
                 continue;

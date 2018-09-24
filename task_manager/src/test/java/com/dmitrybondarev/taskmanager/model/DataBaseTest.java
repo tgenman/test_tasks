@@ -18,9 +18,9 @@ public class DataBaseTest {
         dataBase = new DataBase();
 
 //      Input values and Run
-        dataBase.addNewTask("title1", "desc1", new Date());
-        dataBase.addNewTask("title2", "desc2", new Date());
-        dataBase.addNewTask("title3", "desc3", new Date());
+        dataBase.addNewTask("title1", "desc1", new Date(), new Date());
+        dataBase.addNewTask("title2", "desc2", new Date(), new Date());
+        dataBase.addNewTask("title3", "desc3", new Date(), new Date());
     }
 
     @Test

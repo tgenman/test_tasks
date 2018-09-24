@@ -6,8 +6,8 @@ import com.dmitrybondarev.taskmanager.service.SaverAndLoaderService;
 import com.dmitrybondarev.taskmanager.view.CommandLine;
 import com.dmitrybondarev.taskmanager.view.View;
 
+import java.text.ParseException;
 import java.util.Collection;
-import java.util.Date;
 
 public class MainController {
 
@@ -72,11 +72,15 @@ public class MainController {
         String[] newTask = view.createNewTaskAction();
         String title = newTask[0].trim();
         String description = newTask[1].trim();
+        String date = newTask[2].trim();
+        String time = newTask[3].trim();
 
-        //TODO Add DATE LOGIC
-        Date date = new Date();
-
-        dataBase.addNewTask(title, description, date);
+        try {
+            dataBase.addNewTask(title, description, date, time);
+        } catch (ParseException e) {
+//            TODO Where catch this exception?
+            e.printStackTrace();
+        }
     }
 
     private void controlShowAllTasks() {

@@ -1,8 +1,8 @@
 package com.dmitrybondarev.taskmanager.model;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,13 +14,15 @@ public class DataBase {
         this.tracker = new HashMap<>();
     }
 
-    public int addNewTask(String title, String description, Date dateAndTime) {
-        Task task = new Task(title, description, dateAndTime);
+    public int addNewTask(String title, String description, String date, String time) throws ParseException {
+        Task task = new Task(title, description, date, time);
         tracker.put(task.getId(), task);
         return task.getId();
     }
 
     public Collection<Task> getAllTasks() {
+
+
         return tracker.values();
     }
 
@@ -41,7 +43,4 @@ public class DataBase {
         tracker.remove(id);
         return true;
     }
-
-
-
 }
