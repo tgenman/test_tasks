@@ -1,7 +1,6 @@
 package com.dmitrybondarev.taskmanager.view;
 
 import com.dmitrybondarev.taskmanager.controller.DataBaseController;
-import com.dmitrybondarev.taskmanager.model.DataBase;
 import com.dmitrybondarev.taskmanager.model.Task;
 
 import java.text.ParseException;
@@ -16,7 +15,9 @@ public class CommandLine implements View {
     private Scanner scanner = new Scanner(System.in);
 
     @Override
-    public int readPointOfMenu() {
+    public int chooseActionFromMenu() {
+        printMenu();
+
         int pointOfMenu;
         while (true) {
             String pointOfMenuString = scanner.nextLine();
@@ -31,7 +32,6 @@ public class CommandLine implements View {
             if (pointOfMenu > 0 && pointOfMenu < 6) break;
             printIncorrectInput();
         }
-        return pointOfMenu;
     }
 
     @Override
@@ -115,23 +115,6 @@ public class CommandLine implements View {
     }
 
     @Override
-    public void printMenu() {
-        System.out.println("Menu:");
-        System.out.println("1. Create new Task");
-        System.out.println("2. Show all Tasks");
-        System.out.println("3. Delete Task (you must know id");
-        System.out.println("4. Find Task by key word or phrase (in title and description");
-        System.out.println("5. Exit and Save");
-        System.out.println("You should enter from 1 to 5:");
-    }
-
-    @Override
-    public void printIdOfNewTask(int id) {
-        System.out.println("Add task with id = " + id);
-        System.out.println();
-    }
-
-    @Override
     public void printAllTasks(DataBaseController dataBaseController) {
         Map<Date, List<Task>> allTasks = dataBaseController.getAllTasks();
 
@@ -155,5 +138,15 @@ public class CommandLine implements View {
 
     private void printIncorrectInput() {
         System.out.println("Incorrect input. Please, try again");
+    }
+
+    private void printMenu() {
+        System.out.println("Menu:");
+        System.out.println("1. Create new Task");
+        System.out.println("2. Show all Tasks");
+        System.out.println("3. Delete Task (you must know id");
+        System.out.println("4. Find Task by key word or phrase (in title and description");
+        System.out.println("5. Exit and Save");
+        System.out.println("You should enter from 1 to 5:");
     }
 }

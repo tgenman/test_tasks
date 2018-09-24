@@ -4,9 +4,7 @@ import com.dmitrybondarev.taskmanager.controller.DataBaseController;
 
 public interface View {
 
-    void printMenu();
-
-    int readPointOfMenu();
+    int chooseActionFromMenu();
 
     void createNewTaskAction(DataBaseController dataBaseController);
 

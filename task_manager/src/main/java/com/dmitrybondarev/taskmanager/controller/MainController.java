@@ -1,11 +1,8 @@
 package com.dmitrybondarev.taskmanager.controller;
 
 import com.dmitrybondarev.taskmanager.model.DataBase;
-import com.dmitrybondarev.taskmanager.model.Task;
 import com.dmitrybondarev.taskmanager.view.CommandLine;
 import com.dmitrybondarev.taskmanager.view.View;
-
-import java.util.Collection;
 
 public class MainController {
 
@@ -45,8 +42,7 @@ public class MainController {
         boolean isWorking = true;
 
         while (isWorking) {
-            view.printMenu();
-            int pointOfMenu = view.readPointOfMenu();
+            int pointOfMenu = view.chooseActionFromMenu();
             switch (pointOfMenu) {
                 case 1:
                     controlCreateNewTask();
