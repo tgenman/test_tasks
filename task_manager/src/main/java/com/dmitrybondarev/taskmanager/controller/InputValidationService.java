@@ -5,12 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class InputValidationService {
-//
-//    private static SimpleDateFormat dateFormat
-//        = new SimpleDateFormat("dd.mm.yyyy");
-//
-//    private static SimpleDateFormat timeFormat
-//        = new SimpleDateFormat("HH:mm");
 
     private static SimpleDateFormat dateFormat
         = new SimpleDateFormat(MainController.getProperties().getProperty("dateFormat"));

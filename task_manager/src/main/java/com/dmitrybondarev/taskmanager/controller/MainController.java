@@ -3,6 +3,7 @@ package com.dmitrybondarev.taskmanager.controller;
 import com.dmitrybondarev.taskmanager.model.DataBase;
 import com.dmitrybondarev.taskmanager.view.CommandLine;
 import com.dmitrybondarev.taskmanager.view.View;
+import org.apache.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,6 +14,8 @@ public class MainController {
 
     private static final String PATH_TO_PROPERTIES = "src/main/resources/config.properties";
 
+    private static final Logger log = Logger.getLogger(MainController.class);
+
     private static Properties properties;
 
     static {
@@ -22,8 +25,7 @@ public class MainController {
             prop.load(fileInputStream);
             properties = prop;
         } catch (IOException e) {
-//            TODO log "file PATH_TO_PROPERTIES doesn't find"
-            System.out.println("Error");
+            log.error("file " + PATH_TO_PROPERTIES + " doesn't find");
         }
     }
 
@@ -68,6 +70,7 @@ public class MainController {
 
     void startProgram() {
         saverAndLoaderService.loadDataBase();
+        log.info("Program was load successfully");
         view.printWelcomeMessage();
 
         boolean isWorking = true;
@@ -76,24 +79,30 @@ public class MainController {
             int pointOfMenu = view.chooseActionFromMenu();
             switch (pointOfMenu) {
                 case 1:
+                    log.info("User chose Add new task");
                     view.createNewTaskAction(dataBaseController);
                     break;
                 case 2:
+                    log.info("User chose Show all task");
                     view.printAllTasks(dataBaseController);
                     break;
                 case 3:
+                    log.info("User chose Delete task");
                     view.deleteTaskAction(dataBaseController);
                     break;
                 case 4:
+                    log.info("User chose Find tasks");
                     view.findTaskByKeyWordAction(dataBaseController);
                     break;
                 case 5:
+                    log.info("User chose Exit program");
                     isWorking = false;
                     break;
             }
         }
         saverAndLoaderService.saveDataBase();
         view.printExit();
+        log.info("Program was exit successfully");
     }
 
     public static Properties getProperties() {

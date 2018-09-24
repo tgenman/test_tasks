@@ -4,8 +4,10 @@ import com.dmitrybondarev.taskmanager.controller.DataBaseController;
 import com.dmitrybondarev.taskmanager.controller.InputValidationService;
 import com.dmitrybondarev.taskmanager.controller.MainController;
 import com.dmitrybondarev.taskmanager.model.Task;
+import org.apache.log4j.Logger;
 
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,8 @@ import java.util.TreeSet;
 public class CommandLine implements View {
 
     private final static int SIZE_OF_MENU = 5;
+
+    private static final Logger log = Logger.getLogger(CommandLine.class);
 
     private InputValidationService inputValidationService;
 
@@ -36,13 +40,16 @@ public class CommandLine implements View {
 
             try {
                 pointOfMenu = Integer.parseInt(pointOfMenuString);
+                if (pointOfMenu > 0 && pointOfMenu <= SIZE_OF_MENU) {
+                    log.info("User enter correct point of menu = " + pointOfMenu);
+                    break;
+                }
+                printIncorrectInput();
+                log.info("User enter incorrect point of menu = " + pointOfMenuString);
             } catch (NumberFormatException e) {
                 printIncorrectInput();
-                continue;
+                log.info("User enter incorrect point of menu = " + pointOfMenuString);
             }
-
-            if (pointOfMenu > 0 && pointOfMenu <= SIZE_OF_MENU) break;
-            printIncorrectInput();
         }
         return pointOfMenu;
     }
@@ -59,6 +66,8 @@ public class CommandLine implements View {
             title = scanner.nextLine();
             if (inputValidationService.checkTitle(title)) break;
             printIncorrectInput();
+
+            log.info("User enter incorrect title =" + title);
         }
 
         while (true) {
@@ -66,6 +75,9 @@ public class CommandLine implements View {
             description = scanner.nextLine();
             if (inputValidationService.checkDescription(description)) break;
             printIncorrectInput();
+
+            log.info("User enter incorrect description =" + description);
+
         }
 
         while (true) {
@@ -74,6 +86,8 @@ public class CommandLine implements View {
             String dateString = scanner.nextLine();
             if (!inputValidationService.checkDate(dateString)) {
                 printIncorrectInput();
+
+                log.info("User enter incorrect date =" + dateString);
                 continue;
             }
             try {
@@ -81,15 +95,19 @@ public class CommandLine implements View {
                 break;
             } catch (ParseException e) {
                 printIncorrectInput();
+
+                log.info("User enter incorrect date =" + dateString);
             }
         }
 
         while (true) {
             System.out.println("Please, enter date like pattern "
-                    + MainController.getProperties().getProperty("timeFormat"));
+                    + MainController.getProperties().getProperty("timeFormat").toLowerCase());
             String timeString = scanner.nextLine();
             if (!inputValidationService.checkTime(timeString)){
                 printIncorrectInput();
+
+                log.info("User enter incorrect date =" + timeString);
                 continue;
             }
             try {
@@ -97,6 +115,8 @@ public class CommandLine implements View {
                 break;
             } catch (ParseException e) {
                 printIncorrectInput();
+
+                log.info("User enter incorrect date =" + timeString);
             }
         }
 
@@ -104,7 +124,11 @@ public class CommandLine implements View {
 
         System.out.println("Added task with id = " + id);
 
-
+        log.info("User add task:" + id + "  "
+                + title.toUpperCase() + "  "
+                + description + "  "
+                + InputValidationService.dateToString(date) + "  "
+                + InputValidationService.timeToString(time));
     }
 
     @Override
@@ -124,6 +148,8 @@ public class CommandLine implements View {
                 System.out.println(task.toString());
             }
         }
+
+        log.info("User print all tasks");
     }
 
     @Override
@@ -136,18 +162,26 @@ public class CommandLine implements View {
 
             try {
                 id = Integer.parseInt(inputString);
+                if (id > 0) {
+                    break;
+                }
+                printIncorrectInput();
+                log.info("User enter incorrect id for deleting = " + id);
             } catch (NumberFormatException e) {
                 printIncorrectInput();
-                continue;
+                log.info("User enter incorrect id for deleting = " + inputString);
             }
-
-            if (id > 0) break;
-            printIncorrectInput();
         }
         boolean resultOfDeleting = dataBaseController.deleteTaskById(id);
 
-        if (resultOfDeleting) System.out.println("task with id = " + id + " was deleting");
-        else System.out.println("Cant find task with id = " + id);
+        if (resultOfDeleting) {
+            System.out.println("task with id = " + id + " was deleting");
+            log.info("User delete task with id = " + id);
+        }
+        else {
+            System.out.println("Cant find task with id = " + id);
+            log.info("Task with id = " + id + " isn't finding");
+        }
     }
 
     @Override
@@ -159,9 +193,16 @@ public class CommandLine implements View {
             key = scanner.nextLine();
             if (!key.equals("")) break;
             printIncorrectInput();
+            log.info("User enter incorrect key for searching = " + key);
         }
 
-        dataBaseController.getTasksByKeyWord(key);
+        Collection<Task> tasksByKeyWord = dataBaseController.getTasksByKeyWord(key);
+        if (tasksByKeyWord.size() == 0) System.out.println("None tasks with key = " + key);
+        for (Task task : tasksByKeyWord) {
+            System.out.println(task.toString());
+        }
+
+        log.info("Task manager show tasks, which contain key = " + key);
     }
 
     @Override
@@ -185,12 +226,14 @@ public class CommandLine implements View {
     }
 
     private void printMenu() {
+        System.out.println();
         System.out.println("Menu:");
         System.out.println("1. CREATE new Task");
         System.out.println("2. SHOW all Tasks");
         System.out.println("3. DELETE Task (you must know id");
         System.out.println("4. FIND Task by key word or phrase (in title and description");
         System.out.println("5. EXIT and Save");
+        System.out.println();
         System.out.println("You should enter from 1 to 5:");
     }
 }
