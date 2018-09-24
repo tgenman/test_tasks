@@ -4,13 +4,18 @@ import com.dmitrybondarev.taskmanager.model.DataBase;
 import com.dmitrybondarev.taskmanager.view.CommandLine;
 import com.dmitrybondarev.taskmanager.view.View;
 
+import java.util.Scanner;
+
 public class MainController {
 
     public static void main(String[] args) {
         DataBase dataBase = new DataBase();
         SaverAndLoaderService saverAndLoaderService = new SaverAndLoaderService(dataBase);
-        DataBaseController dataBaseController = new DataBaseController(dataBase, saverAndLoaderService);
-        View view = new CommandLine();
+        DataBaseController dataBaseController = new DataBaseController(dataBase);
+
+        InputValidationService inputValidationService = new InputValidationService();
+        Scanner scanner = new Scanner(System.in);
+        View view = new CommandLine(inputValidationService, scanner);
 
         MainController mainController = new MainController(
                 view,

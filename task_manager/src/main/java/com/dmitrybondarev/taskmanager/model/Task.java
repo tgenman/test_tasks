@@ -1,16 +1,12 @@
 package com.dmitrybondarev.taskmanager.model;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import com.dmitrybondarev.taskmanager.controller.InputValidationService;
+
 import java.util.Date;
 
 public class Task {
 
     private static int idCounter = 1;
-
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.mm.yyyy");
-
-    private static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
     private int id;
 
@@ -22,12 +18,12 @@ public class Task {
 
     private Date time;
 
-    public Task(String title, String description, String date, String time) throws ParseException {
+    public Task(String title, String description, Date date, Date time) {
         this.id = idCounter++;
         this.title = title;
         this.description = description;
-        this.date = dateFormat.parse(date);
-        this.time = timeFormat.parse(time);
+        this.date = date;
+        this.time = time;
     }
 
     public int getId() {
@@ -55,15 +51,7 @@ public class Task {
         return  "id=" + id
                 + "   " + title.toUpperCase()
                 + "   " + description
-                + "   " + dateFormat.format(date)
-                + "  " + timeFormat.format(time);
+                + "   " + InputValidationService.dateToString(date)
+                + "  " + InputValidationService.timeToString(time);
     }
-
-    public static String dateToString(Date date) {
-        return dateFormat.format(date);
-    }
-
-//    public static String timeToString(Date time) {
-//        return timeFormat.format(time);
-//    }
 }

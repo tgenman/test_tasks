@@ -1,6 +1,5 @@
 package com.dmitrybondarev.taskmanager.model;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -16,7 +15,7 @@ public class DataBase {
         this.tracker = new HashMap<>();
     }
 
-    public int addNewTask(String title, String description, String date, String time) throws ParseException {
+    public int addNewTask(String title, String description, Date date, Date time) {
         Task task = new Task(title, description, date, time);
         tracker.put(task.getId(), task);
         return task.getId();

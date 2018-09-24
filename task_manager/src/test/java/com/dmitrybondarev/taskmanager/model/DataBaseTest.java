@@ -14,14 +14,14 @@ public class DataBaseTest {
     private DataBase dataBase;
 
     @Before
-    public void initDataBase() throws ParseException {
+    public void initDataBase() {
 //      Test class
         dataBase = new DataBase();
 
 //      Input values and Run
-        dataBase.addNewTask("title1", "desc1", "  ", "  ");
-        dataBase.addNewTask("title2", "desc2", "  ", "  ");
-        dataBase.addNewTask("title3", "desc3", "  ", "  ");
+        dataBase.addNewTask("title1", "desc1", new Date(), new Date());
+        dataBase.addNewTask("title2", "desc2", new Date(), new Date());
+        dataBase.addNewTask("title3", "desc3", new Date(), new Date());
     }
 
 //    @Test

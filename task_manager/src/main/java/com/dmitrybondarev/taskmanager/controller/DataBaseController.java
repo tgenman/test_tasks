@@ -13,19 +13,11 @@ public class DataBaseController {
 
     private DataBase dataBase;
 
-    private SaverAndLoaderService saverAndLoaderService;
-
-    public DataBaseController(DataBase dataBase, SaverAndLoaderService saverAndLoaderService) {
+    public DataBaseController(DataBase dataBase) {
         this.dataBase = dataBase;
-        this.saverAndLoaderService = saverAndLoaderService;
     }
 
-    public int createNewTask(String[] args) throws ParseException {
-        String title = args[0].trim();
-        String description = args[1].trim();
-        String date = args[2].trim();
-        String time = args[3].trim();
-
+    public int createNewTask(String title, String description, Date date, Date time) {
         return dataBase.addNewTask(title, description, date, time);
     }
 

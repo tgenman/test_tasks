@@ -1,11 +1,11 @@
 package com.dmitrybondarev.taskmanager.view;
 
 import com.dmitrybondarev.taskmanager.controller.DataBaseController;
+import com.dmitrybondarev.taskmanager.controller.InputValidationService;
 import com.dmitrybondarev.taskmanager.model.Task;
 
 import java.text.ParseException;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -14,7 +14,14 @@ import java.util.TreeSet;
 
 public class CommandLine implements View {
 
-    private Scanner scanner = new Scanner(System.in);
+    private InputValidationService inputValidationService;
+
+    private Scanner scanner;
+
+    public CommandLine(InputValidationService inputValidationService, Scanner scanner) {
+        this.inputValidationService = inputValidationService;
+        this.scanner = scanner;
+    }
 
     @Override
     public int chooseActionFromMenu() {
@@ -41,32 +48,62 @@ public class CommandLine implements View {
     public void createNewTaskAction(DataBaseController dataBaseController) {
 //      TODO Create input of date in few steps
 
-        String[] splitString;
+        String title;
+        String description;
+        Date date;
+        Date time;
 
         while (true) {
-            System.out.println("Please, enter information like pattern");
-            System.out.println("Title; Description; day.month.year; hours:minutes");
+            System.out.println("Please, enter title");
+            title = scanner.nextLine();
+            if (inputValidationService.checkTitle(title)) break;
+            printIncorrectInput();
+        }
 
-            String newTask = scanner.nextLine();
-            splitString = newTask.split(";");
+        while (true) {
+            System.out.println("Please, enter description");
+            description = scanner.nextLine();
+            if (inputValidationService.checkDescription(description)) break;
+            printIncorrectInput();
+        }
 
-            if (splitString.length != 4
-                    || splitString[0].equals("")) {
+//        TODO propetries dd.mm.yyyy
+        while (true) {
+            System.out.println("Please, enter date like pattern dd.mm.yyyy");
+            String dateString = scanner.nextLine();
+            if (!inputValidationService.checkDate(dateString)) {
                 printIncorrectInput();
                 continue;
             }
-
-            //TODO Add DATE Validation
-
-            break;
+            try {
+                date = inputValidationService.stringToDate(dateString);
+                break;
+            } catch (ParseException e) {
+                printIncorrectInput();
+            }
         }
 
-        try {
-            int id = dataBaseController.createNewTask(splitString);
-            System.out.println("Add new task with id = " + id);
-        } catch (ParseException e) {
-            e.printStackTrace();
+//        TODO propetries HH:mm
+        while (true) {
+            System.out.println("Please, enter date like pattern HH:mm");
+            String timeString = scanner.nextLine();
+            if (!inputValidationService.checkTime(timeString)){
+                printIncorrectInput();
+                continue;
+            }
+            try {
+                time = inputValidationService.stringToTime(timeString);
+                break;
+            } catch (ParseException e) {
+                printIncorrectInput();
+            }
         }
+
+        int id = dataBaseController.createNewTask(title, description, date, time);
+
+        System.out.println("Added task with id = " + id);
+
+
     }
 
     @Override
@@ -81,7 +118,7 @@ public class CommandLine implements View {
         Set<Date> sortedDates = new TreeSet<>(dates);
 
         for (Date date : sortedDates) {
-            System.out.println(Task.dateToString(date));
+            System.out.println(InputValidationService.dateToString(date));
             for (Task task: allTasks.get(date)) {
                 System.out.println(task.toString());
             }
