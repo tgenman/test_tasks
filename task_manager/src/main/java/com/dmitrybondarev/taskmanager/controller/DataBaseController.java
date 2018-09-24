@@ -9,12 +9,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class CrudController {
+public class DataBaseController {
 
     private DataBase dataBase;
 
-    public CrudController(DataBase dataBase) {
+    private SaverAndLoaderService saverAndLoaderService;
+
+    public DataBaseController(DataBase dataBase, SaverAndLoaderService saverAndLoaderService) {
         this.dataBase = dataBase;
+        this.saverAndLoaderService = saverAndLoaderService;
     }
 
     public int createNewTask(String[] args) throws ParseException {
