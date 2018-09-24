@@ -4,9 +4,28 @@ import com.dmitrybondarev.taskmanager.model.DataBase;
 import com.dmitrybondarev.taskmanager.view.CommandLine;
 import com.dmitrybondarev.taskmanager.view.View;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class MainController {
+
+    private static final String PATH_TO_PROPERTIES = "src/main/resources/config.properties";
+
+    private static Properties properties;
+
+    static {
+        try {
+            Properties prop = new Properties();
+            FileInputStream fileInputStream = new FileInputStream(PATH_TO_PROPERTIES);
+            prop.load(fileInputStream);
+            properties = prop;
+        } catch (IOException e) {
+//            TODO log "file PATH_TO_PROPERTIES doesn't find"
+            System.out.println("Error");
+        }
+    }
 
     public static void main(String[] args) {
         DataBase dataBase = new DataBase();
@@ -40,6 +59,13 @@ public class MainController {
         this.dataBaseController = dataBaseController;
     }
 
+    private static Properties loadProperties() throws IOException {
+        Properties prop = new Properties();
+        FileInputStream fileInputStream = new FileInputStream(PATH_TO_PROPERTIES);
+        prop.load(fileInputStream);
+        return prop;
+    }
+
     void startProgram() {
         saverAndLoaderService.loadDataBase();
         view.printWelcomeMessage();
@@ -68,5 +94,9 @@ public class MainController {
         }
         saverAndLoaderService.saveDataBase();
         view.printExit();
+    }
+
+    public static Properties getProperties() {
+        return properties;
     }
 }

@@ -5,10 +5,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class InputValidationService {
-//TODO properties
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.mm.yyyy");
-//TODO properties
-    private static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+//
+//    private static SimpleDateFormat dateFormat
+//        = new SimpleDateFormat("dd.mm.yyyy");
+//
+//    private static SimpleDateFormat timeFormat
+//        = new SimpleDateFormat("HH:mm");
+
+    private static SimpleDateFormat dateFormat
+        = new SimpleDateFormat(MainController.getProperties().getProperty("dateFormat"));
+
+    private static SimpleDateFormat timeFormat
+        = new SimpleDateFormat(MainController.getProperties().getProperty("timeFormat"));
 
     public static String dateToString(Date date) {
         return dateFormat.format(date);
@@ -36,12 +44,11 @@ public class InputValidationService {
         if (day < 0 || day > 31) return false;
         if (month < 1 || month > 12) return false;
         if (year < 0) return false;
-
         return true;
     }
 
     public boolean checkTime(String time) {
-        String[] split = time.split("[.]");
+        String[] split = time.split("[:]");
         if (split.length != 2) return false;
         int hours = Integer.parseInt(split[0]);
         int minutes = Integer.parseInt(split[1]);
@@ -54,12 +61,10 @@ public class InputValidationService {
 
 
     public Date stringToDate(String date) throws ParseException {
-        Date result = dateFormat.parse(date);
-        return result;
+        return dateFormat.parse(date);
     }
 
     public Date stringToTime(String time) throws ParseException {
-        Date result = timeFormat.parse(time);
-        return new Date();
+        return timeFormat.parse(time);
     }
 }

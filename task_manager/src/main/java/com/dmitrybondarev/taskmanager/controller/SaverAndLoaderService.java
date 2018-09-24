@@ -4,6 +4,9 @@ import com.dmitrybondarev.taskmanager.model.DataBase;
 
 public class SaverAndLoaderService {
 
+    private static String pathToDataBaseFile
+            = MainController.getProperties().getProperty("pathToDataBaseFile");
+
     private DataBase dataBase;
 
 //    TODO Implement loging

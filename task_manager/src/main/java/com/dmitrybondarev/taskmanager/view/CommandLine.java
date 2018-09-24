@@ -2,6 +2,7 @@ package com.dmitrybondarev.taskmanager.view;
 
 import com.dmitrybondarev.taskmanager.controller.DataBaseController;
 import com.dmitrybondarev.taskmanager.controller.InputValidationService;
+import com.dmitrybondarev.taskmanager.controller.MainController;
 import com.dmitrybondarev.taskmanager.model.Task;
 
 import java.text.ParseException;
@@ -13,6 +14,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class CommandLine implements View {
+
+    private final static int SIZE_OF_MENU = 5;
 
     private InputValidationService inputValidationService;
 
@@ -38,7 +41,7 @@ public class CommandLine implements View {
                 continue;
             }
 
-            if (pointOfMenu > 0 && pointOfMenu < 6) break;
+            if (pointOfMenu > 0 && pointOfMenu <= SIZE_OF_MENU) break;
             printIncorrectInput();
         }
         return pointOfMenu;
@@ -46,8 +49,6 @@ public class CommandLine implements View {
 
     @Override
     public void createNewTaskAction(DataBaseController dataBaseController) {
-//      TODO Create input of date in few steps
-
         String title;
         String description;
         Date date;
@@ -67,9 +68,9 @@ public class CommandLine implements View {
             printIncorrectInput();
         }
 
-//        TODO propetries dd.mm.yyyy
         while (true) {
-            System.out.println("Please, enter date like pattern dd.mm.yyyy");
+            System.out.println("Please, enter date like pattern "
+                    + MainController.getProperties().getProperty("dateFormat"));
             String dateString = scanner.nextLine();
             if (!inputValidationService.checkDate(dateString)) {
                 printIncorrectInput();
@@ -83,9 +84,9 @@ public class CommandLine implements View {
             }
         }
 
-//        TODO propetries HH:mm
         while (true) {
-            System.out.println("Please, enter date like pattern HH:mm");
+            System.out.println("Please, enter date like pattern "
+                    + MainController.getProperties().getProperty("timeFormat"));
             String timeString = scanner.nextLine();
             if (!inputValidationService.checkTime(timeString)){
                 printIncorrectInput();
