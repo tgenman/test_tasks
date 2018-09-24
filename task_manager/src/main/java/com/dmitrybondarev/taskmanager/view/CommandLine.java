@@ -32,6 +32,7 @@ public class CommandLine implements View {
             if (pointOfMenu > 0 && pointOfMenu < 6) break;
             printIncorrectInput();
         }
+        return pointOfMenu;
     }
 
     @Override
@@ -67,7 +68,7 @@ public class CommandLine implements View {
     }
 
     @Override
-    public int deleteTaskAction(DataBaseController dataBaseController) {
+    public void deleteTaskAction(DataBaseController dataBaseController) {
         System.out.println("Enter id of task for deleting:");
         int id;
 

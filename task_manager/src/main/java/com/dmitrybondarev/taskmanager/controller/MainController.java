@@ -45,16 +45,16 @@ public class MainController {
             int pointOfMenu = view.chooseActionFromMenu();
             switch (pointOfMenu) {
                 case 1:
-                    controlCreateNewTask();
+                    view.createNewTaskAction(dataBaseController);
                     break;
                 case 2:
-                    controlShowAllTasks();
+                    view.printAllTasks(dataBaseController);
                     break;
                 case 3:
-                    controlDeleteTaskById();
+                    view.deleteTaskAction(dataBaseController);
                     break;
                 case 4:
-                    controlFindTaskByKeyWord();
+                    view.findTaskByKeyWordAction(dataBaseController);
                     break;
                 case 5:
                     isWorking = false;
@@ -64,21 +64,4 @@ public class MainController {
         saverAndLoaderService.saveDataBase();
         view.printExit();
     }
-
-    private void controlCreateNewTask() {
-        view.createNewTaskAction(dataBaseController);
-    }
-
-    private void controlShowAllTasks() {
-        view.printAllTasks(dataBaseController);
-    }
-
-    private void controlDeleteTaskById() {
-        view.deleteTaskAction(dataBaseController);
-    }
-
-    private void controlFindTaskByKeyWord() {
-        view.findTaskByKeyWordAction(dataBaseController);
-    }
-
 }
