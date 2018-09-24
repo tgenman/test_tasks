@@ -21,21 +21,8 @@ public class DataBase {
         return task.getId();
     }
 
-    public Map<Date, List<Task>> getAllTasks() {
-        Map<Date, List<Task>> result = new HashMap<>();
-        Collection<Task> values = tracker.values();
-
-        for (Task task : values) {
-            List<Task> taskList = result.get(task.getDate());
-            if (taskList != null) {
-                taskList.add(task);
-            } else {
-                ArrayList<Task> newTaskList = new ArrayList<>();
-                newTaskList.add(task);
-                result.put(task.getDate(), newTaskList);
-            }
-        }
-        return result;
+    public Collection<Task> getAllTasks() {
+        return tracker.values();
     }
 
     public Collection<Task> getTasksByKeyWord(String keyWord) {

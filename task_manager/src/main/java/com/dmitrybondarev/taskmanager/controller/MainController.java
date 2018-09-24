@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -19,22 +20,23 @@ public class MainController {
     private static Properties properties;
 
     static {
+
         try {
-            Properties prop = new Properties();
-            FileInputStream fileInputStream = new FileInputStream(PATH_TO_PROPERTIES);
-            prop.load(fileInputStream);
-            properties = prop;
+            InputStream is = MainController.class.getClassLoader().getResourceAsStream("config.properties");
+            properties = new Properties();
+            properties.load(is);
         } catch (IOException e) {
             log.fatal("file " + PATH_TO_PROPERTIES + " doesn't find");
         }
     }
 
-    public static void main(String[] args) {
-        DataBase dataBase = new DataBase();
-        SaverAndLoaderService saverAndLoaderService = new SaverAndLoaderService(dataBase);
-        DataBaseController dataBaseController = new DataBaseController(dataBase);
 
+        public static void main(String[] args) {
+        DataBase dataBase = new DataBase();
         InputValidationService inputValidationService = new InputValidationService();
+        DataBaseController dataBaseController = new DataBaseController(dataBase);
+        SaverAndLoaderService saverAndLoaderService = new SaverAndLoaderService(dataBase, inputValidationService);
+
         Scanner scanner = new Scanner(System.in);
         View view = new CommandLine(inputValidationService, scanner);
 
@@ -79,19 +81,15 @@ public class MainController {
             int pointOfMenu = view.chooseActionFromMenu();
             switch (pointOfMenu) {
                 case 1:
-                    log.info("User chose Add new task");
                     view.createNewTaskAction(dataBaseController);
                     break;
                 case 2:
-                    log.info("User chose Show all task");
                     view.printAllTasks(dataBaseController);
                     break;
                 case 3:
-                    log.info("User chose Delete task");
                     view.deleteTaskAction(dataBaseController);
                     break;
                 case 4:
-                    log.info("User chose Find tasks");
                     view.findTaskByKeyWordAction(dataBaseController);
                     break;
                 case 5:

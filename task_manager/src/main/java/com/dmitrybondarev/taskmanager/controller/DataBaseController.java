@@ -4,8 +4,10 @@ import com.dmitrybondarev.taskmanager.model.DataBase;
 import com.dmitrybondarev.taskmanager.model.Task;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +24,20 @@ public class DataBaseController {
     }
 
     public Map<Date, List<Task>> getAllTasks() {
-        return dataBase.getAllTasks();
+        Map<Date, List<Task>> result = new HashMap<>();
+        Collection<Task> allTasks = dataBase.getAllTasks();
+
+        for (Task task : allTasks) {
+            List<Task> taskList = result.get(task.getDate());
+            if (taskList != null) {
+                taskList.add(task);
+            } else {
+                ArrayList<Task> newTaskList = new ArrayList<>();
+                newTaskList.add(task);
+                result.put(task.getDate(), newTaskList);
+            }
+        }
+        return result;
     }
 
     public Collection<Task> getTasksByKeyWord(String keyWord) {

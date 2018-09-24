@@ -1,12 +1,20 @@
 package com.dmitrybondarev.taskmanager.controller;
 
+import com.dmitrybondarev.taskmanager.model.DataBase;
+import com.dmitrybondarev.taskmanager.model.Task;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.Date;
 
 public class SaverAndLoaderService {
@@ -16,17 +24,39 @@ public class SaverAndLoaderService {
 
     private static final Logger log = Logger.getLogger(MainController.class);
 
-    private DataBaseController dataBaseController;
+    private DataBase dataBase;
 
     private InputValidationService inputValidationService;
 
-    public SaverAndLoaderService(DataBaseController dataBaseController, InputValidationService inputValidationService) {
-        this.dataBaseController = dataBaseController;
+    public SaverAndLoaderService(DataBase dataBase, InputValidationService inputValidationService) {
+        this.dataBase = dataBase;
         this.inputValidationService = inputValidationService;
     }
 
     public void saveDataBase() {
-//        TODO implement saving to file
+        File f = new File(pathToDataBaseFile);
+        if (f.exists()) {
+            f.delete();
+        }
+
+        Collection<Task> allTasks = dataBase.getAllTasks();
+
+        try {
+            PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(pathToDataBaseFile), "Cp866"));
+            for (Task task : allTasks) {
+                String buffer = task.getTitle() + ";"
+                                + task.getDescription() + ";"
+                                + InputValidationService.dateToString(task.getDate()) + ";"
+                                + InputValidationService.timeToString(task.getTime());
+                pw.println(buffer);
+            }
+            pw.close();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        log.info("Successfully save data to file " + pathToDataBaseFile);
     }
 
     public void loadDataBase() {
@@ -36,7 +66,7 @@ public class SaverAndLoaderService {
                 BufferedReader reader = new BufferedReader(new FileReader(pathToDataBaseFile));
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    String[] row = line.split("[|]");
+                    String[] row = line.split(";");
 
                     String title = row[0];
                     String description = row[1];
@@ -46,7 +76,7 @@ public class SaverAndLoaderService {
                     Date date = inputValidationService.stringToDate(dateString);
                     Date time = inputValidationService.stringToTime(timeString);
 
-                    dataBaseController.createNewTask(title, description, date, time);
+                    dataBase.addNewTask(title, description, date, time);
                 }
 //            } catch (FileNotFoundException e) {
 //                log.error("Cant find file " + pathToDataBaseFile);
@@ -55,8 +85,9 @@ public class SaverAndLoaderService {
             } catch (ParseException e) {
                 log.error("Parse error. DataBase has damage.");
             }
-            log.info("Successfully load data from file");
+            log.info("Successfully load data from file " + pathToDataBaseFile);
+        } else {
+            log.info("Cant find file " + pathToDataBaseFile);
         }
-        log.info("Cant find file " + pathToDataBaseFile);
     }
 }
