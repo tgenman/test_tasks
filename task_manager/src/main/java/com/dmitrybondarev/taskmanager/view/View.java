@@ -1,30 +1,22 @@
 package com.dmitrybondarev.taskmanager.view;
 
-import com.dmitrybondarev.taskmanager.model.Task;
-
-import java.util.Collection;
+import com.dmitrybondarev.taskmanager.controller.DataBaseController;
 
 public interface View {
 
-    int readPointOfMenu();
-
-    String[] createNewTaskAction();
-
-    int deleteTaskAction();
-
-    String findTaskByKeyWordAction();
-
-    void printWelcomeMessage();
-
     void printMenu();
 
-    void printIdOfNewTask(int id);
+    int readPointOfMenu();
 
-    void printTasks(Collection<Task> list);
+    void createNewTaskAction(DataBaseController dataBaseController);
 
-    void printCantFindId(int id);
+    void printAllTasks(DataBaseController dataBaseController);
 
-    void printTaskWasDeleted(int id);
+    void deleteTaskAction(DataBaseController dataBaseController);
+
+    void findTaskByKeyWordAction(DataBaseController dataBaseController);
+
+    void printWelcomeMessage();
 
     void printExit();
 }

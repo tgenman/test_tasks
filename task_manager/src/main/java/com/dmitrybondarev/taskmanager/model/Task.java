@@ -58,4 +58,12 @@ public class Task {
                 + "   " + dateFormat.format(date)
                 + "  " + timeFormat.format(time);
     }
+
+    public static String dateToString(Date date) {
+        return dateFormat.format(date);
+    }
+
+//    public static String timeToString(Date time) {
+//        return timeFormat.format(time);
+//    }
 }

@@ -3,7 +3,9 @@ package com.dmitrybondarev.taskmanager.model;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DataBase {
@@ -20,14 +22,25 @@ public class DataBase {
         return task.getId();
     }
 
-    public Collection<Task> getAllTasks() {
+    public Map<Date, List<Task>> getAllTasks() {
+        Map<Date, List<Task>> result = new HashMap<>();
+        Collection<Task> values = tracker.values();
 
-
-        return tracker.values();
+        for (Task task : values) {
+            List<Task> taskList = result.get(task.getDate());
+            if (taskList != null) {
+                taskList.add(task);
+            } else {
+                ArrayList<Task> newTaskList = new ArrayList<>();
+                newTaskList.add(task);
+                result.put(task.getDate(), newTaskList);
+            }
+        }
+        return result;
     }
 
     public Collection<Task> getTasksByKeyWord(String keyWord) {
-        Collection<Task> allTasks = getAllTasks();
+        Collection<Task> allTasks = tracker.values();
         Collection<Task> resultTasks = new ArrayList<>();
         for (Task task : allTasks) {
             if (task.getTitle().contains(keyWord)

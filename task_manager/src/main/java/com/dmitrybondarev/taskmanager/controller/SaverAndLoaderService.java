@@ -1,4 +1,4 @@
-package com.dmitrybondarev.taskmanager.service;
+package com.dmitrybondarev.taskmanager.controller;
 
 import com.dmitrybondarev.taskmanager.model.DataBase;
 

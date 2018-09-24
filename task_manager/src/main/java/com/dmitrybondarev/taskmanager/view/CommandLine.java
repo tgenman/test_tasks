@@ -1,9 +1,15 @@
 package com.dmitrybondarev.taskmanager.view;
 
+import com.dmitrybondarev.taskmanager.controller.DataBaseController;
+import com.dmitrybondarev.taskmanager.model.DataBase;
 import com.dmitrybondarev.taskmanager.model.Task;
 
-import java.util.Collection;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 public class CommandLine implements View {
 
@@ -29,7 +35,7 @@ public class CommandLine implements View {
     }
 
     @Override
-    public String[] createNewTaskAction() {
+    public void createNewTaskAction(DataBaseController dataBaseController) {
 //      TODO Create input of date in few steps
 
         String[] splitString;
@@ -51,11 +57,17 @@ public class CommandLine implements View {
 
             break;
         }
-        return splitString;
+
+        try {
+            int id = dataBaseController.createNewTask(splitString);
+            System.out.println("Add new task with id = " + id);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public int deleteTaskAction() {
+    public int deleteTaskAction(DataBaseController dataBaseController) {
         System.out.println("Enter id of task for deleting:");
         int id;
 
@@ -72,11 +84,14 @@ public class CommandLine implements View {
             if (id > 0) break;
             printIncorrectInput();
         }
-        return id;
+        boolean resultOfDeleting = dataBaseController.deleteTaskById(id);
+
+        if (resultOfDeleting) System.out.println("task with id = " + id + " was deleting");
+        else System.out.println("Cant find task with id = " + id);
     }
 
     @Override
-    public String findTaskByKeyWordAction() {
+    public void findTaskByKeyWordAction(DataBaseController dataBaseController) {
         System.out.println("Enter key word/phrase for searching");
         String key;
 
@@ -86,7 +101,7 @@ public class CommandLine implements View {
             printIncorrectInput();
         }
 
-        return key;
+        dataBaseController.getTasksByKeyWord(key);
     }
 
     @Override
@@ -117,24 +132,19 @@ public class CommandLine implements View {
     }
 
     @Override
-    public void printTasks(Collection<Task> list) {
-        if (list.size() == 0) {
+    public void printAllTasks(DataBaseController dataBaseController) {
+        Map<Date, List<Task>> allTasks = dataBaseController.getAllTasks();
+
+        if (allTasks.size() == 0) {
             System.out.println("None tasks.");
         }
-        for (Task task : list) {
-            System.out.println(task.toString());
+        Set<Date> dates = allTasks.keySet();
+        for (Date date : dates) {
+            System.out.println(Task.dateToString(date));
+            for (Task task: allTasks.get(date)) {
+                System.out.println(task.toString());
+            }
         }
-        System.out.println();
-    }
-
-    @Override
-    public void printCantFindId(int id) {
-        System.out.println("Task manager doesn't contain task with id = " + id);
-    }
-
-    @Override
-    public void printTaskWasDeleted(int id) {
-        System.out.println("Task with id = " + id + " was deleted");
     }
 
     @Override
