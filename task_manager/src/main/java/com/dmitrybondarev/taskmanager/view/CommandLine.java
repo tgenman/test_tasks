@@ -5,10 +5,12 @@ import com.dmitrybondarev.taskmanager.model.Task;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class CommandLine implements View {
 
@@ -68,6 +70,25 @@ public class CommandLine implements View {
     }
 
     @Override
+    public void printAllTasks(DataBaseController dataBaseController) {
+        Map<Date, List<Task>> allTasks = dataBaseController.getAllTasks();
+
+        if (allTasks.size() == 0) {
+            System.out.println("None tasks.");
+        }
+        Set<Date> dates = allTasks.keySet();
+
+        Set<Date> sortedDates = new TreeSet<>(dates);
+
+        for (Date date : sortedDates) {
+            System.out.println(Task.dateToString(date));
+            for (Task task: allTasks.get(date)) {
+                System.out.println(task.toString());
+            }
+        }
+    }
+
+    @Override
     public void deleteTaskAction(DataBaseController dataBaseController) {
         System.out.println("Enter id of task for deleting:");
         int id;
@@ -107,28 +128,12 @@ public class CommandLine implements View {
 
     @Override
     public void printWelcomeMessage() {
-        System.out.println("Welcome to the Task Manager.");
+        System.out.println("Welcome to the TASK MANAGER.");
         System.out.println("You can Create, Read, Find and Delete tasks.");
         System.out.println("Every task has title, description, date and time of execution.");
         System.out.println("Task Manager storage state in file. State save, when program close");
         System.out.println();
 
-    }
-
-    @Override
-    public void printAllTasks(DataBaseController dataBaseController) {
-        Map<Date, List<Task>> allTasks = dataBaseController.getAllTasks();
-
-        if (allTasks.size() == 0) {
-            System.out.println("None tasks.");
-        }
-        Set<Date> dates = allTasks.keySet();
-        for (Date date : dates) {
-            System.out.println(Task.dateToString(date));
-            for (Task task: allTasks.get(date)) {
-                System.out.println(task.toString());
-            }
-        }
     }
 
     @Override
@@ -143,11 +148,11 @@ public class CommandLine implements View {
 
     private void printMenu() {
         System.out.println("Menu:");
-        System.out.println("1. Create new Task");
-        System.out.println("2. Show all Tasks");
-        System.out.println("3. Delete Task (you must know id");
-        System.out.println("4. Find Task by key word or phrase (in title and description");
-        System.out.println("5. Exit and Save");
+        System.out.println("1. CREATE new Task");
+        System.out.println("2. SHOW all Tasks");
+        System.out.println("3. DELETE Task (you must know id");
+        System.out.println("4. FIND Task by key word or phrase (in title and description");
+        System.out.println("5. EXIT and Save");
         System.out.println("You should enter from 1 to 5:");
     }
 }
