@@ -25,7 +25,7 @@ public class MainController {
             prop.load(fileInputStream);
             properties = prop;
         } catch (IOException e) {
-            log.error("file " + PATH_TO_PROPERTIES + " doesn't find");
+            log.fatal("file " + PATH_TO_PROPERTIES + " doesn't find");
         }
     }
 
