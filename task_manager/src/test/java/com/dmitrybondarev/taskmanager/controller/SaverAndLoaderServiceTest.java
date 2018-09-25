@@ -33,7 +33,7 @@ public class SaverAndLoaderServiceTest {
 //    @Test
 //    public void testLoad() {
 //        saverAndLoaderService.loadDataBase();
-//        Collection<Task> allTasks = dataBase.getAllTasks();
+//        Collection<Task> allTasks = dataBase.getAllTasksAggregatedByDate();
 //        System.out.println(allTasks.size());
 //        for (Task task : allTasks) {
 //            System.out.println(task.toString());

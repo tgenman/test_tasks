@@ -36,7 +36,7 @@ public class CommandLine implements View {
 
         int pointOfMenu;
         while (true) {
-            String pointOfMenuString = scanner.nextLine();
+            String pointOfMenuString = scanner.nextLine().trim();
 
             try {
                 pointOfMenu = Integer.parseInt(pointOfMenuString);
@@ -63,7 +63,7 @@ public class CommandLine implements View {
 
         while (true) {
             System.out.println("Please, enter title");
-            title = scanner.nextLine();
+            title = scanner.nextLine().trim();
             if (inputValidationService.checkTitle(title)) break;
             printIncorrectInput();
 
@@ -72,7 +72,7 @@ public class CommandLine implements View {
 
         while (true) {
             System.out.println("Please, enter description");
-            description = scanner.nextLine();
+            description = scanner.nextLine().trim();
             if (inputValidationService.checkDescription(description)) break;
             printIncorrectInput();
 
@@ -83,7 +83,7 @@ public class CommandLine implements View {
         while (true) {
             System.out.println("Please, enter date like pattern "
                     + MainController.getProperties().getProperty("dateFormat"));
-            String dateString = scanner.nextLine();
+            String dateString = scanner.nextLine().trim();
             if (!inputValidationService.checkDate(dateString)) {
                 printIncorrectInput();
 
@@ -103,7 +103,7 @@ public class CommandLine implements View {
         while (true) {
             System.out.println("Please, enter date like pattern "
                     + MainController.getProperties().getProperty("timeFormat").toLowerCase());
-            String timeString = scanner.nextLine();
+            String timeString = scanner.nextLine().trim();
             if (!inputValidationService.checkTime(timeString)){
                 printIncorrectInput();
 
@@ -133,7 +133,7 @@ public class CommandLine implements View {
 
     @Override
     public void printAllTasks(DataBaseController dataBaseController) {
-        Map<Date, List<Task>> allTasks = dataBaseController.getAllTasks();
+        Map<Date, List<Task>> allTasks = dataBaseController.getAllTasksAggregatedByDate();
 
         if (allTasks.size() == 0) {
             System.out.println("None tasks.");
@@ -141,13 +141,14 @@ public class CommandLine implements View {
         Set<Date> dates = allTasks.keySet();
 
         Set<Date> sortedDates = new TreeSet<>(dates);
-
+        System.out.println();
         for (Date date : sortedDates) {
-            System.out.println(InputValidationService.dateToString(date));
+            System.out.println(InputValidationService.dateToString(date) + ":");
             for (Task task: allTasks.get(date)) {
                 System.out.println(task.toString());
             }
         }
+        System.out.println();
 
         log.info("User print all tasks");
     }
@@ -158,7 +159,7 @@ public class CommandLine implements View {
         int id;
 
         while (true) {
-            String inputString = scanner.nextLine();
+            String inputString = scanner.nextLine().trim();
 
             try {
                 id = Integer.parseInt(inputString);
@@ -230,8 +231,8 @@ public class CommandLine implements View {
         System.out.println("Menu:");
         System.out.println("1. CREATE new Task");
         System.out.println("2. SHOW all Tasks");
-        System.out.println("3. DELETE Task (you must know id");
-        System.out.println("4. FIND Task by key word or phrase (in title and description");
+        System.out.println("3. DELETE Task (you must know id)");
+        System.out.println("4. FIND Task by key word or phrase (in title and description)");
         System.out.println("5. EXIT and Save");
         System.out.println();
         System.out.println("You should enter from 1 to 5:");

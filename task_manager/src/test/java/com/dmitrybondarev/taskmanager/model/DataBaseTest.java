@@ -36,7 +36,7 @@ public class DataBaseTest {
 //        String expectedDesc3 = "desc3";
 //
 ////      actual results
-//        Collection<Task> allTasks = dataBase.getAllTasks();
+//        Collection<Task> allTasks = dataBase.getAllTasksAggregatedByDate();
 //        int actualSize = allTasks.size();
 //        Iterator<Task> iterator = allTasks.iterator();
 //        Task task1 = iterator.next();
@@ -64,7 +64,7 @@ public class DataBaseTest {
 //    @Test
 //    public void  testGetTaskById() {
 ////      Expected results
-//        Task task = dataBase.getAllTasks().iterator().next();
+//        Task task = dataBase.getAllTasksAggregatedByDate().iterator().next();
 //        int id = task.getId();
 //        String expectedTitle = task.getTitle();
 //        String expectedDesc = task.getDescription();
@@ -125,12 +125,12 @@ public class DataBaseTest {
 //        int expectedSize = 2;
 //
 ////      Run
-//        Task task = dataBase.getAllTasks().iterator().next();
+//        Task task = dataBase.getAllTasksAggregatedByDate().iterator().next();
 //        int id = task.getId();
 //        dataBase.deleteTaskById(id);
 //
 ////      actual results
-//        int actualSize = dataBase.getAllTasks().size();
+//        int actualSize = dataBase.getAllTasksAggregatedByDate().size();
 //
 ////      assert
 //        Assert.assertEquals(expectedSize, actualSize);

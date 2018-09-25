@@ -3,7 +3,6 @@ package com.dmitrybondarev.taskmanager.controller;
 import com.dmitrybondarev.taskmanager.model.DataBase;
 import com.dmitrybondarev.taskmanager.model.Task;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -23,7 +22,7 @@ public class DataBaseController {
         return dataBase.addNewTask(title, description, date, time);
     }
 
-    public Map<Date, List<Task>> getAllTasks() {
+    public Map<Date, List<Task>> getAllTasksAggregatedByDate() {
         Map<Date, List<Task>> result = new HashMap<>();
         Collection<Task> allTasks = dataBase.getAllTasks();
 
