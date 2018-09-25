@@ -16,7 +16,7 @@ import java.util.TreeSet;
 public class DataBaseControllerTest {
 
     @Test
-    public void  getAllTasksAggregatedByDate() throws ParseException {
+    public void  testGetAllTasksAggregatedByDate() throws ParseException {
 //      Test class
         DataBase dataBase = new DataBase();
         InputValidationService iVService = new InputValidationService();
@@ -70,5 +70,4 @@ public class DataBaseControllerTest {
         Assert.assertEquals(expectedTitle12, actualTitle12);
         Assert.assertEquals(expectedTitle2, actualTitle2);
     }
-
 }
