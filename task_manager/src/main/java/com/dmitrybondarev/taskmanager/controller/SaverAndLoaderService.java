@@ -51,11 +51,10 @@ public class SaverAndLoaderService {
                 pw.println(buffer);
             }
             pw.close();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            log.error("IOException when save DataBase");
         }
+
         log.info("Successfully save data to file " + pathToDataBaseFile);
     }
 
@@ -78,8 +77,6 @@ public class SaverAndLoaderService {
 
                     dataBase.addNewTask(title, description, date, time);
                 }
-//            } catch (FileNotFoundException e) {
-//                log.error("Cant find file " + pathToDataBaseFile);
             } catch (IOException e) {
                 log.error("Some IOException");
             } catch (ParseException e) {

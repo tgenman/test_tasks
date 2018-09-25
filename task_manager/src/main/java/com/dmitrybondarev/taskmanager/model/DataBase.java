@@ -41,4 +41,8 @@ public class DataBase {
         tracker.remove(id);
         return true;
     }
+
+    public Task getTaskById(int id) {
+        return tracker.get(id);
+    }
 }
